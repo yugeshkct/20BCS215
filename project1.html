@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Management</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h1>Number Management</h1>
+  
+  <form id="addForm">
+    <label for="number">Number:</label>
+    <input type="text" id="number" name="number" required>
+    <button type="submit">Add</button>
+  </form>
+  
+  <h2>Numbers:</h2>
+  <ul id="numberList"></ul>
+  
+  <script>
+    function addNumber(event) {
+      event.preventDefault();
+      const numberInput = document.getElementById('number');
+      const number = numberInput.value;
+      
+      axios.post('/numbers', { number })
+        .then(() => {
+          numberInput.value = '';
+          fetchNumbers();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+    
+    function deleteNumber(number) {
+      axios.delete(`/numbers/${number}`)
+        .then(() => {
+          fetchNumbers();
+        })
+        .catch(error => {
+          console.error(error);
